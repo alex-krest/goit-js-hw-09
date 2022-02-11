@@ -9,13 +9,12 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    //  time = selectedDates[0].getTime() - options.defaultDate.getTime();
     finishDate = selectedDates[0].getTime();
     console.log(finishDate);
   },
 };
 // НЕ МЕНЯЕТСЯ!!!!!
-console.log(finishDate);
+// console.log(finishDate);
 // ---------------------------------------------
 const refs = {
   inputEl: document.querySelector('input#datetime-picker'),
@@ -59,7 +58,7 @@ function timer() {
   refs.startEl.setAttribute('disabled', 'disabled');
   // --Дествие с частотой 1 раз в секунду
   interval = setInterval(counterTime, 1000);
-  //  Колбек функция для вышенаписанной функции.
+  //  Колбек функция для вышенаписанной функции.Забираем конечную дату из метода onClose
   function counterTime() {
     const currentDate = Date.now();
     const differenceTime = finishDate - currentDate;
