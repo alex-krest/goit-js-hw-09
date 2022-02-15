@@ -6,14 +6,7 @@ const refs = {
   amountEl: document.querySelector('[name=amount]'),
   buttonEl: document.querySelector('form>button'),
 };
-// -Взяли значения полей формы:
-// const delay = Number(refs.formEl.elements.delay.value);
-// const step = Number(refs.formEl.elements.step.value);
-// const amount = Number(refs.formEl.elements.amount.value);
-// console.log(delay);
-// console.log(step);
-// console.log(amount);
-// ----ОТПРАВКА ФОРМЫ
+
 refs.formEl.addEventListener('submit', startPromise);
 
 //   ----ФУНКЦИЯ КОЛБЕК ДЛЯ ОТПРАВКИ ФОРМЫ С ЗАПУСКОМ ЦИКЛА ВЫЗОВОВ ПРОМИСОВ
@@ -23,22 +16,33 @@ function startPromise(e) {
   const {
     elements: { delay, step, amount },
   } = e.currentTarget;
-  console.log(delay.value);
-  console.log(step.value);
-  console.log(amount.value);
+  // -переводим значение в числовой формат
+  const firstDelay = Number(delay.value);
+  const stepValue = Number(step.value);
+  const amountValue = Number(amount.value);
+  let del = 0;
   // -Цикл генераций промисов c их обработкой
-  for (let i = 0; i < amount; i += 1) {
-    const position = i + 1;
-    if (i > 1) {
-      delay = step.value;
+  for (let i = 1; i <= amountValue; i += 1) {
+    const position = i;
+    if (i === 1) {
+      del = firstDelay;
+      createPromise(position, del)
+        .then(({ position, delay }) => {
+          console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
+        })
+        .catch(({ position, delay }) => {
+          console.log(`❌ Rejected promise ${position} in ${delay}ms`);
+        });
+    } else {
+      del += stepValue;
+      createPromise(position, del)
+        .then(({ position, delay }) => {
+          console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
+        })
+        .catch(({ position, delay }) => {
+          console.log(`❌ Rejected promise ${position} in ${delay}ms`);
+        });
     }
-    createPromise(position, delay)
-      .then(({ position, delay }) => {
-        console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
-      })
-      .catch(({ position, delay }) => {
-        console.log(`❌ Rejected promise ${position} in ${delay}ms`);
-      });
   }
 }
 
